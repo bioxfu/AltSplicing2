@@ -45,9 +45,9 @@ mkdir tables
 Rscript script/merge_AS_out.R ${SAM1}_vs_${SAM2} ${SAM3}_vs_${SAM4} ${SAM3}_vs_${SAM1} ${SAM4}_vs_${SAM2}
 
 ## add gene annotation
-Rscript script/AS_gene_anno.R $ANNO merge_A3SS_PValue0.05_deltaPSI0.1
-Rscript script/AS_gene_anno.R $ANNO merge_A5SS_PValue0.05_deltaPSI0.1
-Rscript script/AS_gene_anno.R $ANNO merge_MXE_PValue0.05_deltaPSI0.1
-Rscript script/AS_gene_anno.R $ANNO merge_RI_PValue0.05_deltaPSI0.1
-Rscript script/AS_gene_anno.R $ANNO merge_SE_PValue0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_A3SS_PValue0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_A5SS_PValue0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_MXE_PValue0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_RI_PValue0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_SE_PValue0.05_deltaPSI0.1
 
