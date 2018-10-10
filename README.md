@@ -42,7 +42,7 @@ cp example/workflow.sh workflow.sh
 ```
 
 
-### 7. Run the workflow
+### 6. Run the workflow
 ```
 nohup ./workflow.sh &
 ```

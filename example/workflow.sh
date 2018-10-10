@@ -28,10 +28,10 @@ echo "$BAM_DIR/$SAM3_1.bam,$BAM_DIR/$SAM3_2.bam,$BAM_DIR/$SAM3_3.bam" > b3.txt
 echo "$BAM_DIR/$SAM4_1.bam,$BAM_DIR/$SAM4_2.bam,$BAM_DIR/$SAM4_3.bam" > b4.txt
 
 mkdir rMATS_out
-python rmats.py --b1 b1.txt --b2 b2.txt --gtf $GTF --od rMATS_out/${SAM1}_vs_${SAM2} -t paired --nthread 20 --readLength 101 --tstat 20 -libType fr-firststrand 
-python rmats.py --b1 b3.txt --b2 b4.txt --gtf $GTF --od rMATS_out/${SAM3}_vs_${SAM4} -t paired --nthread 20 --readLength 101 --tstat 20 -libType fr-firststrand 
-python rmats.py --b1 b3.txt --b2 b1.txt --gtf $GTF --od rMATS_out/${SAM3}_vs_${SAM1} -t paired --nthread 20 --readLength 101 --tstat 20 -libType fr-firststrand 
-python rmats.py --b1 b4.txt --b2 b2.txt --gtf $GTF --od rMATS_out/${SAM4}_vs_${SAM2} -t paired --nthread 20 --readLength 101 --tstat 20 -libType fr-firststrand 
+rmats.py --b1 b1.txt --b2 b2.txt --gtf $GTF --od rMATS_out/${SAM1}_vs_${SAM2} -t paired --nthread 20 --readLength 101 --tstat 20 --libType fr-firststrand 
+rmats.py --b1 b3.txt --b2 b4.txt --gtf $GTF --od rMATS_out/${SAM3}_vs_${SAM4} -t paired --nthread 20 --readLength 101 --tstat 20 --libType fr-firststrand 
+rmats.py --b1 b3.txt --b2 b1.txt --gtf $GTF --od rMATS_out/${SAM3}_vs_${SAM1} -t paired --nthread 20 --readLength 101 --tstat 20 --libType fr-firststrand 
+rmats.py --b1 b4.txt --b2 b2.txt --gtf $GTF --od rMATS_out/${SAM4}_vs_${SAM2} -t paired --nthread 20 --readLength 101 --tstat 20 --libType fr-firststrand 
 
 
 #Rscript script/merge_AS_out.R ${SAM1}_vs_${SAM2} ${SAM3}_vs_${SAM4} ${SAM3}_vs_${SAM1} ${SAM4}_vs_${SAM2}
