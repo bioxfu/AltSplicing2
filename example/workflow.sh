@@ -51,3 +51,8 @@ Rscript script/AS_gene_anno.R $ANNO tables/merge_MXE_PValue0.05_deltaPSI0.1
 Rscript script/AS_gene_anno.R $ANNO tables/merge_RI_PValue0.05_deltaPSI0.1
 Rscript script/AS_gene_anno.R $ANNO tables/merge_SE_PValue0.05_deltaPSI0.1
 
+Rscript script/AS_gene_anno.R $ANNO tables/merge_A3SS_FDR0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_A5SS_FDR0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_MXE_FDR0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_RI_FDR0.05_deltaPSI0.1
+Rscript script/AS_gene_anno.R $ANNO tables/merge_SE_FDR0.05_deltaPSI0.1
