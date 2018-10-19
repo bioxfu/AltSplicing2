@@ -24,3 +24,8 @@ rmats.py --b1 b1.txt --b2 b2.txt --gtf $GTF --od rMATS_out/${SAM1}_vs_${SAM2} -t
 ## Do paired-test
 mkdir -p pairadise/${SAM1}_vs_${SAM2}
 Rscript ./script/AS_paired_compare.R
+
+## Plot PCA using IncLevel
+mkdir figure
+Rscript script/IncLevel_PCA.R ${SAM1}_vs_${SAM2}
+
