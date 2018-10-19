@@ -1,7 +1,7 @@
 library(RColorBrewer)
 
-#vs <- commandArgs(T)
-vs <- 'WT_vs_T158'
+vs <- commandArgs(T)
+#vs <- 'WT_vs_T158'
 groups <- unlist(strsplit(vs, '_vs_'))
 
 A3SS <- read.table(paste0('pairadise/', vs, '/A3SS.MATS.JCEC.paired.compared.txt'), header = T, sep = '\t', stringsAsFactors = F)
