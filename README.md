@@ -16,9 +16,9 @@ chmod +x $PWD/rMATS.4.0.2/rMATS-turbo-Linux-UCS4/rmats.py
 export PATH=$PWD/rMATS.4.0.2/rMATS-turbo-Linux-UCS4/:$PATH
 
 ## The PAIRADISE statistical model is applicable to many forms of allele-specific isoform variation (e.g. RNA editing), and can be used as a generic statistical model for RNA-seq studies involving **paired replicates**.
-PAIRADISE can be used as a stand-alone statistical model in R by downloading the and installing the file 'PAIRADISE_RPackage_1.0.tar.gz'. The following command will install the package within R:
+PAIRADISE can be used as a stand-alone statistical model in R by downloading the and installing the file 'PAIRADISE_1.0.tar.gz'. The following command will install the package within R:
 
-install.packages('PAIRADISE_RPackage_1.0.tar.gz', repos = NULL, type = 'source')
+install.packages('PAIRADISE_1.0.tar.gz', repos = NULL, type = 'source')
 ```
 
 
@@ -60,3 +60,10 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/miniconda2/envs/gmatic/lib/
 export LD_LIBRARY_PATH
 ```
 
+if you can't run R:
+/cluster/home/xfu/R/3.5.1/lib64/R/bin/exec/R: symbol lookup error: /cluster/home/xfu/miniconda2/envs/gmatic/lib/libreadline.so.6: undefined symbol: PC
+```
+LD_LIBRARY_PATH=''
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/:$HOME/miniconda2/envs/gmatic/lib/
+export LD_LIBRARY_PATH
+```
