@@ -21,6 +21,11 @@ BAM_DIR=~/Project/CFH0003_20180831/RNA-Seq/bam
 GTF=/cluster/home/xfu/Gmatic7/gene/tair10/tair10.gtf
 ANNO=/cluster/home/xfu/Gmatic7/gene/tair10/tair10_gene_anno.tsv
 
+## Human
+#GTF=/cluster/home/xfu/Gmatic6/gene/hg38_v26/gencode_hg38_v26.gtf
+## Mouse
+#GTF=/cluster/home/xfu/Gmatic6/gene/mm10_vM13/gencode_mm10_vM13.gtf
+
 ## bam list
 echo "$BAM_DIR/$SAM1_1.bam,$BAM_DIR/$SAM1_2.bam,$BAM_DIR/$SAM1_3.bam" > b1.txt
 echo "$BAM_DIR/$SAM2_1.bam,$BAM_DIR/$SAM2_2.bam,$BAM_DIR/$SAM2_3.bam" > b2.txt

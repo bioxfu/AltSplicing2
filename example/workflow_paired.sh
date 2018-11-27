@@ -11,8 +11,10 @@ SAM2_4=T158_4_18R377
 
 BAM_DIR=/data1/HJY/Project/Mecp2/T158M/RNA-Seq/bam
 
+## Human
+#GTF=/cluster/home/xfu/Gmatic6/gene/hg38_v26/gencode_hg38_v26.gtf
 ## Mouse
-GTF=/home/xfu/Gmatic6/gene/mm10_vM13/gencode_mm10_vM13.gtf
+GTF=/cluster/home/xfu/Gmatic6/gene/mm10_vM13/gencode_mm10_vM13.gtf
 
 ## bam list
 echo "$BAM_DIR/$SAM1_1.bam,$BAM_DIR/$SAM1_2.bam,$BAM_DIR/$SAM1_3.bam,$BAM_DIR/$SAM1_4.bam" > b1.txt
