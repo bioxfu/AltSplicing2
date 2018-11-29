@@ -11,13 +11,13 @@ merge_tables_significant <- function(P) {
       dfm$significant <- 0 
       dfm$significant[(dfm[, P] < 0.05 & abs(dfm$IncLevelDifference) > 0.1 & dfm$IncLevelDifference > 0)] <- 1
       dfm$significant[(dfm[, P] < 0.05 & abs(dfm$IncLevelDifference) > 0.1 & dfm$IncLevelDifference < 0)] <- -1
-      colnames(dfm)[-c(1,2)] <- paste0(VS[i], '.', colnames(dfm)[-c(1,2)])
+      colnames(dfm)[-c(1,2,3)] <- paste0(VS[i], '.', colnames(dfm)[-c(1,2,3)])
       dfms[[i]] <- dfm
     }
     
     merge_dfm <- dfms[[1]]
     for (i in 2:length(VS)) {
-      merge_dfm <- merge(merge_dfm, dfms[[i]][-2], by.x = 1, by.y = 1)
+      merge_dfm <- merge(merge_dfm, dfms[[i]][c(-2,-3)], by.x = 1, by.y = 1)
     }
     
     merge_dfm_sig <- merge_dfm[rowSums(merge_dfm[grep('significant', colnames(merge_dfm))]) != 0, ]
