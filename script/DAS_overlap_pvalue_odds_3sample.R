@@ -22,13 +22,14 @@ topGO <- function(myGenes, category='BP', p_cutoff=0.05, gomap, geneid){
 }
 
 argv <- commandArgs(T)
-psi_cutoff <- argv[1]
-Sample1_path <- argv[2]
-Sample2_path <- argv[3]
-Sample3_path <- argv[4]
-Sample1_name <- argv[5]
-Sample2_name <- argv[6]
-Sample3_name <- argv[7]
+fdr_cutoff <- argv[1]
+psi_cutoff <- argv[2]
+Sample1_path <- argv[3]
+Sample2_path <- argv[4]
+Sample3_path <- argv[5]
+Sample1_name <- argv[6]
+Sample2_name <- argv[7]
+Sample3_name <- argv[8]
 # psi_cutoff <- 0.1
 # Sample1_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_MeCP2_KO.14/'
 # Sample2_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KO/'
@@ -67,9 +68,9 @@ for (AS in c('SE', 'RI', 'MXE', 'A3SS', 'A5SS')) {
     Sample3$event <- paste('A5SS', Sample3$chr, Sample3$strand, Sample3$longExonStart_0base, Sample3$longExonEnd, Sample3$shortES, Sample3$shortEE, Sample3$flankingES, Sample3$flankingEE, Sample3$geneSymbol, Sample3$GeneID, sep='|')
   }
   
-  Sample1_sig <- abs(Sample1$IncLevelDifference) > psi_cutoff & Sample1$FDR < 0.05
-  Sample2_sig <- abs(Sample2$IncLevelDifference) > psi_cutoff & Sample2$FDR < 0.05
-  Sample3_sig <- abs(Sample3$IncLevelDifference) > psi_cutoff & Sample3$FDR < 0.05
+  Sample1_sig <- abs(Sample1$IncLevelDifference) > psi_cutoff & Sample1$FDR < fdr_cutoff
+  Sample2_sig <- abs(Sample2$IncLevelDifference) > psi_cutoff & Sample2$FDR < fdr_cutoff
+  Sample3_sig <- abs(Sample3$IncLevelDifference) > psi_cutoff & Sample3$FDR < fdr_cutoff
   
   Sample1_all <- c(Sample1_all, Sample1[Sample1_sig, 'event'])
   Sample2_all <- c(Sample2_all, Sample2[Sample2_sig, 'event'])
@@ -93,7 +94,7 @@ for (i in 1:(length(gene_lst)-1)) {
 }
 colnames(mat) <- c('List1', 'List2', 'Number', 'P-value', 'OddsRatio')
 
-pdf(paste0('figures/AS_overlap_FDR0.05_PSI', psi_cutoff, '.pdf'), wid=10)
+pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '.pdf'), wid=10)
 layout(matrix(c(1,2),nrow=1), wid=c(1,1))
 par(mar=c(2,0,2,0))
 par(xpd=T)

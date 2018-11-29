@@ -8,6 +8,8 @@ Rscript script/combine_bg_events.R $fromGTF_PATH1 $fromGTF_PATH2 $fromGTF_PATH3
 SAM1=/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_MeCP2_KO.14/
 SAM2=/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KO/
 SAM3=/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KI/
+FDR=0.01
+PSI=0.1
 
-Rscript script/DAS_overlap_pvalue_odds_3sample.R 0.1 $SAM1 $SAM2 $SAM3 MeCP2_KO RBFOX2_KO RBFOX2_KI
+Rscript script/DAS_overlap_pvalue_odds_3sample.R $FDR $PSI $SAM1 $SAM2 $SAM3 MeCP2_KO RBFOX2_KO RBFOX2_KI
 
