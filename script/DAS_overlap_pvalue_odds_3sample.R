@@ -22,18 +22,25 @@ topGO <- function(myGenes, category='BP', p_cutoff=0.05, gomap, geneid){
 }
 
 argv <- commandArgs(T)
-fdr_cutoff <- argv[1]
-psi_cutoff <- argv[2]
+fdr_cutoff <- as.numeric(argv[1])
+psi_cutoff <- as.numeric(argv[2])
 Sample1_path <- argv[3]
 Sample2_path <- argv[4]
 Sample3_path <- argv[5]
 Sample1_name <- argv[6]
 Sample2_name <- argv[7]
 Sample3_name <- argv[8]
+rpkm_path <- argv[9]
+rpkm_cutoff <- as.numeric(argv[10])
+# rpkm_path <- '/data1/HJY/Project/20181121JY/RNA-Seq/table_8samples/RPKM_table_FDR0.05_FC1.5_all.tsv'
 # psi_cutoff <- 0.1
 # Sample1_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_MeCP2_KO.14/'
 # Sample2_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KO/'
 # Sample3_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KI/'
+rpkm <- read.table(rpkm_path, header = T, row.names = 1)
+rpkm <- rpkm[1:(grep('_vs_', colnames(rpkm))[1]-1)]
+selected_gene <- rownames(rpkm)[rowSums(rpkm)/ncol(rpkm) >= rpkm_cutoff]
+
 Sample1_all <- NULL
 Sample2_all <- NULL
 Sample3_all <- NULL
@@ -42,6 +49,9 @@ for (AS in c('SE', 'RI', 'MXE', 'A3SS', 'A5SS')) {
   Sample1 <- read.table(paste0(Sample1_path, '/', AS, '.MATS.JCEC.txt'), header = T, sep = '\t')
   Sample2 <- read.table(paste0(Sample2_path, '/', AS, '.MATS.JCEC.txt'), header = T, sep = '\t')
   Sample3 <- read.table(paste0(Sample3_path, '/', AS, '.MATS.JCEC.txt'), header = T, sep = '\t')
+  Sample1 <- Sample1[Sample1$GeneID %in% selected_gene, ]
+  Sample2 <- Sample2[Sample2$GeneID %in% selected_gene, ]
+  Sample3 <- Sample3[Sample3$GeneID %in% selected_gene, ]
   if (AS == 'SE') {
     Sample1$event <- paste('SE', Sample1$chr, Sample1$strand, Sample1$exonStart_0base, Sample1$exonEnd, Sample1$upstreamES, Sample1$upstreamEE, Sample1$downstreamES, Sample1$downstreamEE, Sample1$geneSymbol, Sample1$GeneID, sep='|')
     Sample2$event <- paste('SE', Sample2$chr, Sample2$strand, Sample2$exonStart_0base, Sample2$exonEnd, Sample2$upstreamES, Sample2$upstreamEE, Sample2$downstreamES, Sample2$downstreamEE, Sample2$geneSymbol, Sample2$GeneID, sep='|')
@@ -94,7 +104,7 @@ for (i in 1:(length(gene_lst)-1)) {
 }
 colnames(mat) <- c('List1', 'List2', 'Number', 'P-value', 'OddsRatio')
 
-pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '.pdf'), wid=10)
+pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '.pdf'), wid=10)
 layout(matrix(c(1,2),nrow=1), wid=c(1,1))
 par(mar=c(2,0,2,0))
 par(xpd=T)
