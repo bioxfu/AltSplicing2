@@ -10,6 +10,8 @@ SAM2=/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KO/
 SAM3=/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KI/
 FDR=0.01
 PSI=0.1
+RPKM=/data1/HJY/Project/20181121JY/RNA-Seq/table_8samples/RPKM_table_FDR0.05_FC1.5_all.tsv
+RPKM_cutoff=2
 
-Rscript script/DAS_overlap_pvalue_odds_3sample.R $FDR $PSI $SAM1 $SAM2 $SAM3 MeCP2_KO RBFOX2_KO RBFOX2_KI
+Rscript script/DAS_overlap_pvalue_odds_3sample.R $FDR $PSI $SAM1 $SAM2 $SAM3 MeCP2_KO RBFOX2_KO RBFOX2_KI $RPKM $RPKM_cutoff
 

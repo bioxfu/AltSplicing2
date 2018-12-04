@@ -34,9 +34,14 @@ rpkm_path <- argv[9]
 rpkm_cutoff <- as.numeric(argv[10])
 # rpkm_path <- '/data1/HJY/Project/20181121JY/RNA-Seq/table_8samples/RPKM_table_FDR0.05_FC1.5_all.tsv'
 # psi_cutoff <- 0.1
+# fdr_cutoff <- 0.01
+# rpkm_cutoff <- 2
 # Sample1_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_MeCP2_KO.14/'
 # Sample2_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KO/'
 # Sample3_path <- '/data1/HJY/Project/20181121JY/AltSplicing2/rMATS_out/WT_vs_RBFOX2_KI/'
+# Sample1_name <- 'MeCP2_KO'
+# Sample2_name <- 'RBFOX2_KO'
+# Sample3_name <- 'RBFOX2_KI'
 rpkm <- read.table(rpkm_path, header = T, row.names = 1)
 rpkm <- rpkm[1:(grep('_vs_', colnames(rpkm))[1]-1)]
 selected_gene <- rownames(rpkm)[rowSums(rpkm)/ncol(rpkm) >= rpkm_cutoff]
@@ -82,13 +87,13 @@ for (AS in c('SE', 'RI', 'MXE', 'A3SS', 'A5SS')) {
   Sample2_sig <- abs(Sample2$IncLevelDifference) > psi_cutoff & Sample2$FDR < fdr_cutoff
   Sample3_sig <- abs(Sample3$IncLevelDifference) > psi_cutoff & Sample3$FDR < fdr_cutoff
   
-  Sample1_all <- c(Sample1_all, Sample1[Sample1_sig, 'event'])
-  Sample2_all <- c(Sample2_all, Sample2[Sample2_sig, 'event'])
-  Sample3_all <- c(Sample3_all, Sample3[Sample3_sig, 'event'])
+  Sample1_all <- rbind(Sample1_all, Sample1[Sample1_sig, c('event', 'IncLevelDifference')])
+  Sample2_all <- rbind(Sample2_all, Sample2[Sample2_sig, c('event', 'IncLevelDifference')])
+  Sample3_all <- rbind(Sample3_all, Sample3[Sample3_sig, c('event', 'IncLevelDifference')])
   
 }
 
-gene_lst <- list(Sample1=Sample1_all, Sample2=Sample2_all, Sample3=Sample3_all)
+gene_lst <- list(Sample1=Sample1_all[,'event'], Sample2=Sample2_all[,'event'], Sample3=Sample3_all[,'event'])
 names(gene_lst) <- c(Sample1_name, Sample2_name, Sample3_name)
 genome <- read.table('all_possible_AS_events')
 
@@ -113,11 +118,52 @@ plot(0, type='n', xaxt='n', yaxt='n', bty='n')
 addtable2plot(0.65, 0, mat, display.rownames=F, display.colnames=T, bty='n')
 dev.off()
 
+Sample12_all <- merge(Sample1_all, Sample2_all, by.x = 1, by.y = 1)
+Sample13_all <- merge(Sample1_all, Sample3_all, by.x = 1, by.y = 1)
+Sample23_all <- merge(Sample2_all, Sample3_all, by.x = 1, by.y = 1)
 
-# intersections <- attr(v, 'intersections')
-# olp_gene <- sub('\\..+', '', sub('.+\\|', '', intersections$`KO:Mutant`))
-# go <- topGO(olp_gene, gomap='script/mouse_gene2GO.map', geneid='script/mouse_genewithGO')
-# go$Term <- apply(go, 1, function(x){Term(GOTERM[[x[1]]])})
-# write.table(go, paste0('table/AS_overlap_PSI', psi_cutoff, '.GO.tsv'), sep = '\t', quote = F, row.names = F)
-# write.table(intersections$`KO:Mutant`, paste0('table/AS_overlap_FDR0.05_PSI', psi_cutoff, '.events.tsv'), sep = '\t', quote = F, row.names = F, col.names = F)
+intersections <- attr(v, 'intersections')
+s123 <- intersections[[paste0(Sample1_name, ':', Sample2_name, ':', Sample3_name)]]
+s12 <- intersections[[paste0(Sample1_name, ':', Sample2_name)]]
+s23 <- intersections[[paste0(Sample2_name, ':', Sample3_name)]]
+s13 <- intersections[[paste0(Sample1_name, ':', Sample3_name)]]
+
+pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_correlation', '.pdf'), wid=10)
+par(mfrow=c(2,3))
+# Sample1 overlap Sample2
+x <- Sample12_all[Sample12_all$event %in% c(s12, s123), 2]
+y <- Sample12_all[Sample12_all$event %in% c(s12, s123), 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample1_name), ylab=paste0('IncLevelDifference of ', Sample2_name), main = paste0(Sample1_name, ' overlap with ', Sample2_name, ' (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+# Sample1 overlap Sample3
+x <- Sample13_all[Sample13_all$event %in% c(s13, s123), 2]
+y <- Sample13_all[Sample13_all$event %in% c(s13, s123), 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample1_name), ylab=paste0('IncLevelDifference of ', Sample3_name), main = paste0(Sample1_name, ' overlap with ', Sample3_name, ' (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+# Sample2 overlap Sample3
+x <- Sample23_all[Sample23_all$event %in% c(s23, s123), 2]
+y <- Sample23_all[Sample23_all$event %in% c(s23, s123), 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample2_name), ylab=paste0('IncLevelDifference of ', Sample3_name), main = paste0(Sample2_name, ' overlap with ', Sample3_name, ' (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+# Sample1 overlap Sample2 and Sample3
+x <- Sample12_all[Sample12_all$event %in% s123, 2]
+y <- Sample12_all[Sample12_all$event %in% s123, 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample1_name), ylab=paste0('IncLevelDifference of ', Sample2_name), main = paste0('three samples overlap (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+x <- Sample13_all[Sample13_all$event %in% s123, 2]
+y <- Sample13_all[Sample13_all$event %in% s123, 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample1_name), ylab=paste0('IncLevelDifference of ', Sample3_name), main = paste0('three samples overlap (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+x <- Sample23_all[Sample23_all$event %in% s123, 2]
+y <- Sample23_all[Sample23_all$event %in% s123, 3]
+plot(x, y, xlab=paste0('IncLevelDifference of ', Sample2_name), ylab=paste0('IncLevelDifference of ', Sample3_name), main = paste0('three samples overlap (', length(x), ')'))
+text(-0.8, 0.8, substitute(paste(italic(r), '=', x), list(x=round(cor(x,y),2))))
+
+dev.off()
+
 
