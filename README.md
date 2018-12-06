@@ -1,6 +1,6 @@
 # AltSplicing2 Workflow Tutorial
 
-### 1. Install rMATS and PAIRADISE (optional)
+### 1.1 Install rMATS and PAIRADISE (optional)
 ```
 ## create conda env
 conda create -n rMATS numpy scipy pysam samtools star rmats2sashimiplot
@@ -21,6 +21,16 @@ PAIRADISE can be used as a stand-alone statistical model in R by downloading the
 install.packages('PAIRADISE_1.0.tar.gz', repos = NULL, type = 'source')
 ```
 
+### 1.2 Install [RBP Maps](https://github.com/yeolab/rbp-maps)
+```
+git clone https://github.com/yeolab/rbp-maps
+cp conda_env_of_rbp-maps.yml rbp-maps/conda_env.txt
+cd rbp-maps
+conda env create -f conda_env.txt -n rbp-maps
+source activate rbp-maps
+python setup.py build
+python setup.py install
+```
 
 ### 2. Login the fat node
 ```
