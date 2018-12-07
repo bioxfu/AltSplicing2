@@ -119,13 +119,18 @@ addtable2plot(0.65, 0, mat, display.rownames=F, display.colnames=T, bty='n')
 dev.off()
 
 pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample1_name, '_vs_', Sample2_name, '.pdf'))
-venn(gene_lst[c(Sample1_name, Sample2_name)])
+v12 <- venn(gene_lst[c(Sample1_name, Sample2_name)])
+write.table(attr(v12, 'intersections')[[paste0(Sample1_name, ':', Sample2_name)]], paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample1_name, '_vs_', Sample2_name, '_olp.txt'), row.names = F, col.names = F, quote = F)
 dev.off()
+
 pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample1_name, '_vs_', Sample3_name, '.pdf'))
-venn(gene_lst[c(Sample1_name, Sample3_name)])
+v13 <- venn(gene_lst[c(Sample1_name, Sample3_name)])
+write.table(attr(v13, 'intersections')[[paste0(Sample1_name, ':', Sample3_name)]], paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample1_name, '_vs_', Sample3_name, '_olp.txt'), row.names = F, col.names = F, quote = F)
 dev.off()
+
 pdf(paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample2_name, '_vs_', Sample3_name, '.pdf'))
-venn(gene_lst[c(Sample2_name, Sample3_name)])
+v23 <- venn(gene_lst[c(Sample2_name, Sample3_name)])
+write.table(attr(v23, 'intersections')[[paste0(Sample2_name, ':', Sample3_name)]], paste0('figures/AS_overlap_FDR', fdr_cutoff, '_PSI', psi_cutoff, '_RPKM', rpkm_cutoff, '_', Sample2_name, '_vs_', Sample3_name, '_olp.txt'), row.names = F, col.names = F, quote = F)
 dev.off()
 
 Sample12_all <- merge(Sample1_all, Sample2_all, by.x = 1, by.y = 1)
