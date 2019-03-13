@@ -21,6 +21,10 @@ BAM_DIR=~/Project/CFH0003_20180831/RNA-Seq/bam
 GTF=/cluster/home/xfu/Gmatic7/gene/tair10/tair10.gtf
 ANNO=/cluster/home/xfu/Gmatic7/gene/tair10/tair10_gene_anno.tsv
 
+## Nicotiana
+#GTF=/cluster/home/xfu/Gmatic7/gene/Niben/Niben101.gtf
+#ANNO=/cluster/home/xfu/Gmatic7/gene/Niben/Niben101_gene_anno_ath.tsv
+
 ## Human
 #GTF=/cluster/home/xfu/Gmatic6/gene/hg38_v26/gencode_hg38_v26.gtf
 ## Mouse
