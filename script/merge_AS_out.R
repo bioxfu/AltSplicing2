@@ -1,8 +1,8 @@
 library(RColorBrewer)
 cols <- brewer.pal(3, 'Set2')
 
-#AS_lst <- c('SE', 'RI', 'MXE', 'A3SS', 'A5SS')
-AS_lst <- c('SE')
+AS_lst <- c('SE', 'RI', 'MXE', 'A3SS', 'A5SS')
+#AS_lst <- c('SE')
 #VS <- c('loc_EV_vs_loc_C3_mut', 'loc_EV_vs_loc_TYLCV', 'sys_EV_vs_sys_TYLCV', 'RL1_vs_RL5', 'RL1_vs_RL7')
 
 VS <- commandArgs(T)
@@ -20,15 +20,17 @@ merge_tables_significant <- function(P) {
     }
     
     merge_dfm <- dfms[[1]]
-    for (i in 2:length(VS)) {
-      merge_dfm <- merge(merge_dfm, dfms[[i]][c(-2,-3)], by.x = 1, by.y = 1)
+    if (length(VS) > 1) {
+      for (i in 2:length(VS)) {
+        merge_dfm <- merge(merge_dfm, dfms[[i]][c(-2,-3)], by.x = 1, by.y = 1)
+      }
     }
     
     merge_dfm_sig <- merge_dfm[rowSums(merge_dfm[grep('significant', colnames(merge_dfm))]) != 0, ]
     write.table(merge_dfm_sig, paste0('tables/merge_', AS, '_', P, '0.05_deltaPSI0.1'), row.names=F, quote=F, sep='\t')
     
-    stat <- sapply(merge_dfm_sig[, grep('significant', colnames(merge_dfm_sig))], table)
-    stat <- stat[c('-1', '1'),]
+    stat <- sapply(merge_dfm_sig[, grep('significant', colnames(merge_dfm_sig)), drop=F], table)
+    stat <- stat[c('-1', '1'),,drop=F]
     rownames(stat) <- c('exon_inclusion_up', 'exon_inclusion_down')
     colnames(stat) <- sub('.significant', '', colnames(stat))
 
